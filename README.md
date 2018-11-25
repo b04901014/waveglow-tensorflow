@@ -48,7 +48,7 @@ All audio files should be in wav format.
 To start training, run:
 ```
 cd src
-python3 main.py --use\_weight\_norm --truncate\_sample
+python3 main.py --use_weight_norm --truncate_sample
 ```
 
 The configurations, hyperparams and descriptions are in *src/hparams.py*
