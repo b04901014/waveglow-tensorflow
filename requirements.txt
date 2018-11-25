@@ -1,0 +1,16 @@
+librosa
+numpy
+scipy
+tqdm
+six
+wheel
+mock
+absl-py
+astor
+gast
+keras_applications
+keras_preprocessing
+protobuf
+tensorboard==1.12.0
+tensorflow_estimator
+termcolor

@@ -1,2 +1,58 @@
-# waveglow
-Tensorflow implementation of Nvidia Waveglow
+# WAVEGLOW
+This is a tensorflow implementation of [NVIDIA/waveglow](https://github.com/NVIDIA/waveglow).
+Now I'm getting some audible samples on a single gpu, please wait patiently for new results.
+
+##Setup
+First we need python3 along with [Tensorflow](https://github.com/tensorflow/tensorflow) with gpu support, the version this repository use is **r1.12**.
+Other versions may also work, but I'm not sure which version will have error.
+
+We also need:
+ - [tqdm](https://github.com/tqdm/tqdm)
+ - [librosa](https://github.com/librosa/librosa)
+
+You can also setup the environment by the Dockerfile in the repository.
+However, I build the tensorflow r1.12 from source to specify the cuda version to be 9.2, thus it may take much more time to setup the docker image.
+> docker build -t {IMAGE\_NAME\_YOU\_LIKE} .
+
+##Dataset Preparation
+For getting the dataset prepared, first **adjust the *Input Path* section of *src/hparams.py* **to our dataset path, then run:
+> python3 dataset/procaudio.py
+
+The *metadata.csv* described in *src/hparams.py* is as the following format:
+```
+Audio Directory|Text only for notation|True Text
+```
+
+Example:
+```
+LJ001-0008|has never been surpassed.|has never been surpassed.
+LJ001-0009|Printing, then, for our purpose, may be considered as the art of making books by means of movable types.|Printing, then, for our purpose, may be considered as the art of making books by means of movable types.
+```
+
+We take this format as input since we use the [LJ Speech Dataset](https://keithito.com/LJ-Speech-Dataset/) as our training data.
+It's *metadata.csv* is exactly this format and it's used for TTS.
+If you are training on your own dataset, you can **pad the text part since the vocoder will not use it**:
+```
+audio1|deadbeef|deadbeef
+audio2|deadbeef|deadbeef
+audio3|deadbeef|deadbeef
+```
+
+All audio files should be in wav format.
+
+##Training
+To start training, run:
+> python3 main.py --use\_weight\_norm --truncate\_sample
+
+The configurations and hyperparams are in *src/hparams.py*
+
+##TODO
+ - Inference is not tested
+ - Adding loss curve
+ - Adding samples
+ - Multiprocess Dataset Preparation
+
+##References
+ - [NVIDIA/waveglow](https://github.com/NVIDIA/waveglow)
+ - [openai/glow](https://github.com/openai/glow)
+ - [tensorflow/docker](https://github.com/tensorflow/tensorflow/blob/master/tensorflow/tools/docker/Dockerfile.gpu)
