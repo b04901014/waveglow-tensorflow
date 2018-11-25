@@ -2,7 +2,7 @@
 This is a tensorflow implementation of [NVIDIA/waveglow](https://github.com/NVIDIA/waveglow).
 Now I'm getting some audible samples on a single gpu, please wait patiently for new results.
 
-##Setup
+## Setup
 First we need python3 along with [Tensorflow](https://github.com/tensorflow/tensorflow) with gpu support, the version this repository use is **r1.12**.
 Other versions may also work, but I'm not sure which version will have error.
 
@@ -14,7 +14,7 @@ You can also setup the environment by the Dockerfile in the repository.
 However, I build the tensorflow r1.12 from source to specify the cuda version to be 9.2, thus it may take much more time to setup the docker image.
 > docker build -t {IMAGE\_NAME\_YOU\_LIKE} .
 
-##Dataset Preparation
+## Dataset Preparation
 For getting the dataset prepared, first **adjust the *Input Path* section of *src/hparams.py* **to our dataset path, then run:
 > python3 dataset/procaudio.py
 
@@ -40,19 +40,19 @@ audio3|deadbeef|deadbeef
 
 All audio files should be in wav format.
 
-##Training
+## Training
 To start training, run:
 > python3 main.py --use\_weight\_norm --truncate\_sample
 
 The configurations and hyperparams are in *src/hparams.py*
 
-##TODO
+## TODO
  - Inference is not tested
  - Adding loss curve
  - Adding samples
  - Multiprocess Dataset Preparation
 
-##References
+## References
  - [NVIDIA/waveglow](https://github.com/NVIDIA/waveglow)
  - [openai/glow](https://github.com/openai/glow)
  - [tensorflow/docker](https://github.com/tensorflow/tensorflow/blob/master/tensorflow/tools/docker/Dockerfile.gpu)
