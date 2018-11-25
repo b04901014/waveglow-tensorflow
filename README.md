@@ -20,7 +20,7 @@ For getting the dataset prepared, first **adjust the *Input Path* section of *sr
 
 The *metadata.csv* described in *src/hparams.py* is as the following format:
 ```
-Audio Directory|Text only for notation|True Text
+Audio Name without extension|Text only for notation|True Text
 ```
 
 Example:
@@ -37,6 +37,8 @@ audio1|deadbeef|deadbeef
 audio2|deadbeef|deadbeef
 audio3|deadbeef|deadbeef
 ```
+Then there should be audio1.wav, audio2.wav and audio3.wav in the corresponding *dataset\_dir* you specified in *src/hparams.py*
+
 
 All audio files should be in wav format.
 
@@ -44,7 +46,7 @@ All audio files should be in wav format.
 To start training, run:
 > python3 main.py --use\_weight\_norm --truncate\_sample
 
-The configurations and hyperparams are in *src/hparams.py*
+The configurations, hyperparams and descriptions are in *src/hparams.py*
 
 ## TODO
  - Inference is not tested
