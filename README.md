@@ -16,9 +16,10 @@ However, I build the tensorflow r1.12 from source to specify the cuda version to
 
 ## Dataset Preparation
 For getting the dataset prepared, first **adjust the *Input Path* section of *src/hparams.py* **to our dataset path, then run:
-> cd src
-> python3 dataset/procaudio.py
-
+```
+cd src
+python3 dataset/procaudio.py
+```
 The *metadata.csv* described in *src/hparams.py* is as the following format:
 ```
 Audio Name without extension|Text only for notation|True Text
@@ -45,8 +46,10 @@ All audio files should be in wav format.
 
 ## Training
 To start training, run:
-> cd src
-> python3 main.py --use\_weight\_norm --truncate\_sample
+```
+cd src
+python3 main.py --use\_weight\_norm --truncate\_sample
+```
 
 The configurations, hyperparams and descriptions are in *src/hparams.py*
 
