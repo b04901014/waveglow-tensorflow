@@ -14,7 +14,8 @@ def get_var(name,
         assert len(shape) == 4 #shuold be convolution
         g = tf.get_variable(name=name+magic+'_g', shape=[1, 1, 1, shape[-1]], dtype=dtype, initializer=initializer, trainable=trainable)
         v = tf.get_variable(name=name+magic+'_v', shape=shape, dtype=dtype, initializer=initializer, trainable=trainable)
-        return g * tf.nn.l2_normalize(v, axis=[0, 1, 2])
+        v_norm = tf.nn.l2_normalize(v, axis=[0, 1, 2])
+        return g * v_norm
     ret = tf.get_variable(name=name, shape=shape, dtype=dtype, initializer=initializer, trainable=trainable)
     return ret
 
@@ -107,7 +108,8 @@ def inv1x1conv2d(inputs, reverse=False, scope=None, reuse=None):
         w = get_var('weights', initializer=init)
         w = tf.reshape(w, [1, 1] + w_shape)
         if not reverse:
-            logdet = tf.cast(tf.log(tf.abs(tf.linalg.det(tf.cast(w, tf.float64)))), tf.float32)
+            absdet = tf.abs(tf.linalg.det(tf.cast(w * 1e+3, tf.float64)))
+            logdet = tf.cast(tf.log(absdet + 1e-12), tf.float32) - tf.log(1e+3) * (inputs.get_shape().as_list()[1])
             logdet *= tf.cast(tf.shape(inputs)[0] * tf.shape(inputs)[2] * tf.shape(inputs)[3], tf.float32)
             ret = tf.nn.conv2d(inputs, w, [1, 1, 1, 1], 'SAME', data_format="NCHW")
             return ret, logdet

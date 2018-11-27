@@ -10,6 +10,8 @@ parser.add_argument('--batch_size', dest='batch_size', type=int, default=4, help
 parser.add_argument('--mel_time_step', dest='mel_time_step', type=int, default=64, help='Time Step of Inputs')
 #Optimizer
 parser.add_argument('--lr', dest='lr', type=float, default=1e-4, help='Initial Learning Rate')
+parser.add_argument('--lr_decay_rate', dest='lr_decay_rate', type=float, default=0.5, help='Decay rate of exponential learning rate decay')
+parser.add_argument('--lr_decay_steps', dest='lr_decay_steps', type=int, default=300000, help='Decay steps of exponential learning rate decay')
 #Epoch Settings
 parser.add_argument('--epoch', dest='epoch', type=int, default=100000, help='Number of Epochs')
 parser.add_argument('--display_step', dest='display_step', type=int, default=100, help='Batch to Output Training Details')
@@ -24,7 +26,6 @@ parser.add_argument('--gpu_fraction', dest='gpu_fraction', type=float, default=0
 #parser.add_argument('--fp16_scale', dest='fp16_scale', type=float, default=128, help='Scaling factor for fp16 computation')
 #Normalization
 parser.add_argument('--use_weight_norm', dest='use_weight_norm', default=False, action='store_true',  help='Use Weight Normalization or not')
-parser.add_argument('--use_instance_norm', dest='use_instance_norm', default=False, action='store_true',  help='Use Instance Normalization or not')
 
 ##Inference##
 parser.add_argument('--do_infer', dest='is_training', default=True, action='store_false', help='Default to training mode, do inference if --do_infer is specified')

@@ -26,8 +26,6 @@ def wavenet(inputs, mels, weight_norm=False, scope=None, reuse=None):
                          scope='conv_mel_'+str(i+1),
                          reuse=reuse)
             x = x + c
-            if args.use_instance_norm:
-                x = instance_norm(x, scope='norm_x'+str(i+1), reuse=reuse)
             x = tf.tanh(x[:, :args.wavnet_channels]) * tf.sigmoid(x[:, args.wavnet_channels:])
             if i != args.wavenet_layers - 1:
                 res =  myconv1d(inputs=x,
@@ -36,8 +34,6 @@ def wavenet(inputs, mels, weight_norm=False, scope=None, reuse=None):
                                 weight_norm=weight_norm,
                                 scope='conv_x_'+str(i+1),
                                 reuse=reuse)
-                if args.use_instance_norm:
-                    res = instance_norm(res, scope='norm_res'+str(i+1), reuse=reuse)
                 x += res[:, : args.wavnet_channels]
                 ret += res[:, args.wavnet_channels:]
             else:
@@ -63,11 +59,12 @@ def conv_afclayer(inputs, mels, reverse=False, weight_norm=False, scope=None, re
             inputs, logdet = inputs
         a, b = tf.split(inputs, num_or_size_splits=2, axis=1)
         logs, t = wavenet(a, mels, weight_norm=args.use_weight_norm, scope='WN', reuse=reuse)
+        s = tf.exp(tf.minimum(logs, 30.))
         if not reverse:
-            b = tf.exp(logs) * b + t
+            b = s * b + t
             ret = tf.concat([a, b], axis=1)
             return ret, tf.reduce_sum(logs, axis=1), logdet
-        b = (b - t) / tf.exp(logs)
+        b = (b - t) / (s + 1e-12)
         ret = tf.concat([a, b], axis=1)
         return ret
 

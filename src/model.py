@@ -58,7 +58,11 @@ class WaveGlow():
 ########INFERENCE#########
 
     def train(self):
-        self.optimizer = tf.train.AdamOptimizer(learning_rate=args.lr)
+        self.lr = tf.train.exponential_decay(args.lr,
+                                             self.global_step,
+                                             args.lr_decay_steps,
+                                             args.lr_decay_rate)
+        self.optimizer = tf.train.AdamOptimizer(learning_rate=self.lr)
         self.grad = self.optimizer.compute_gradients(self.loss, var_list=self.t_vars)
         self.op = self.optimizer.apply_gradients(self.grad, global_step=self.global_step)
         varset = list(set(tf.global_variables()) | set(tf.local_variables()))
