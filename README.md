@@ -1,6 +1,6 @@
 # WAVEGLOW
 This is a tensorflow implementation of [NVIDIA/waveglow](https://github.com/NVIDIA/waveglow).
-Now I'm getting some audible samples on a single gpu, please wait patiently for new results.
+Now some samples at step 190k are at */step_190k_samples*, please wait patiently for further results, the original paper is at 580k.
 
 ## Setup
 First we need python3 along with [Tensorflow](https://github.com/tensorflow/tensorflow) with gpu support, the version this repository use is **r1.12**.
@@ -56,7 +56,6 @@ The configurations, hyperparams and descriptions are in *src/hparams.py*
 ## TODO
  - Inference is not tested
  - Adding loss curve
- - Adding samples
  - Multiprocess Dataset Preparation
 
 ## References
