@@ -54,18 +54,21 @@ def wavenet(inputs, mels, weight_norm=False, scope=None, reuse=None):
 
 def conv_afclayer(inputs, mels, reverse=False, weight_norm=False, scope=None, reuse=None):
     with tf.variable_scope(scope or 'conv_afclayer', reuse=reuse):
-        inputs = inv1x1conv1d(inputs, reverse, 'invconv1x1', reuse)
         if not reverse:
+            inputs = inv1x1conv1d(inputs, reverse, 'invconv1x1', reuse)
             inputs, logdet = inputs
         a, b = tf.split(inputs, num_or_size_splits=2, axis=1)
         logs, t = wavenet(a, mels, weight_norm=args.use_weight_norm, scope='WN', reuse=reuse)
-        s = tf.exp(tf.minimum(logs, 30.))
+        if not reverse:
+            logs = tf.minimum(logs, 8.)
+        s = tf.exp(logs)
         if not reverse:
             b = s * b + t
             ret = tf.concat([a, b], axis=1)
             return ret, tf.reduce_sum(logs, axis=1), logdet
         b = (b - t) / (s + 1e-12)
         ret = tf.concat([a, b], axis=1)
+        ret = inv1x1conv1d(ret, reverse, 'invconv1x1', reuse)
         return ret
 
 class buff():
