@@ -15,7 +15,7 @@ However, I build the tensorflow r1.12 from source to specify the cuda version to
 > docker build -t {IMAGE\_NAME\_YOU\_LIKE} .
 
 ## Dataset Preparation
-For getting the dataset prepared, first **adjust the *Input Path* section of *src/hparams.py* **to our dataset path, then run:
+For getting the dataset prepared, first **adjust the Input Path section of src/hparams.py** to our dataset path, then run:
 ```
 cd src
 python3 dataset/procaudio.py
