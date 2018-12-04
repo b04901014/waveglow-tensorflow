@@ -88,10 +88,7 @@ args = parser.parse_args()
 ##Params dependent of other params##
 args.n_fft = (args.num_freq - 1) * 2
 args.melbasis = librosa.filters.mel(args.sample_rate, args.n_fft, n_mels=args.n_mel, fmin=args.fmin, fmax=args.fmax)
-#args.melbasisinv = np.linalg.pinv(args.melbasis)
 args.step_per_mel = args.hop_length
-#args.step_to_scale = args.step_per_mel // args.squeeze_size + 1 if args.step_per_mel % args.squeeze_size else args.step_per_mel // args.squeeze_size
-#args.wav_time_step = args.mel_time_step * args.step_to_scale * args.squeeze_size
 args.wav_time_step = args.mel_time_step * args.step_per_mel
 if args.n_flows % args.early_output_every == 0:
     args.output_remain = args.squeeze_size - (args.n_flows // args.early_output_every - 1) * args.early_output_size

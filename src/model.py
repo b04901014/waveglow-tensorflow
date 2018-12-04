@@ -10,8 +10,6 @@ from ops import *
 class WaveGlow():
     def __init__(self, sess):
         self.sess = sess
-        self.data_generator = multiproc_reader(500)
-        self.validation_data_generator = multiproc_reader_val(args.sample_num * 5)
         self.build_model()
 
     def build_model(self):
@@ -58,6 +56,8 @@ class WaveGlow():
 ########INFERENCE#########
 
     def train(self):
+        self.data_generator = multiproc_reader(500)
+        self.validation_data_generator = multiproc_reader_val(args.sample_num * 5)
         self.lr = tf.train.exponential_decay(args.lr,
                                              self.global_step,
                                              args.lr_decay_steps,
@@ -94,6 +94,8 @@ class WaveGlow():
         self.sample(0)
         try:
             for epoch in range(start_epoch, args.epoch):
+                clr = self.sess.run(self.lr)
+                print ("Current learning rate: %.6e" %clr)
                 loss_names = ["Total Loss",
                               "LogS Loss",
                               "LogDet Loss",
@@ -166,7 +168,9 @@ class WaveGlow():
                 x.terminate()
            
     def infer(self):
-        self.infer_data_generator = multiproc_reader_val(100)
+        self.infer_data_generator = multiproc_reader_infer(100)
+        self.saver = tf.train.Saver()
+        self.procs = self.infer_data_generator.start_enqueue()
         print ("Performing Inference from %r" %args.infer_mel_dir)
         try:
             if self.load():
@@ -174,6 +178,7 @@ class WaveGlow():
             else:
                 print ('Error loading model at inference state!')
                 raise RuntimeError
+            i = 0
             while self.infer_data_generator.alive:
                 name = 'Infer_Step_%r-%r.wav' %(step, i+1)
                 outpath = os.path.join(args.infer_path, name)
@@ -183,6 +188,7 @@ class WaveGlow():
                 output = np.transpose(output[0])
                 output = np.reshape(output, [-1])
                 writewav(outpath, output)
+                i += 1
         except KeyboardInterrupt:
             print ("KeyboardInterrupt")
         except:

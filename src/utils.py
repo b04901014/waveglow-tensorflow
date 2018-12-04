@@ -29,7 +29,6 @@ def padtomaxlen(mel, wav):
         wav = wav[: args.wav_time_step]
     assert mel.shape[0] == args.mel_time_step
     assert wav.shape[0] == args.wav_time_step
-    
     return mel, wav
             
 class multiproc_reader():
@@ -121,10 +120,16 @@ class multiproc_reader_infer(multiproc_reader_val):
         self.queue = multiprocessing.Queue(qsize)
         self.lock = multiprocessing.Lock()
         self.cnt = multiprocessing.Value('i', 0)
+        self.alive = True
 
     def main_proc(self, cnt):
-        self.alive = True
-        for name in os.path.listdir(args.infer_mel_dir):
+        names = os.listdir(args.infer_mel_dir)
+        while cnt.value != len(names):
+            self.lock.acquire()
+            c = cnt.value
+            name = names[c]
+            cnt.value += 1
+            self.lock.release()
             if os.path.splitext(name)[1] != '.npy':
                 continue
             melname = os.path.join(args.infer_mel_dir, name)
