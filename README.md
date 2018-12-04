@@ -54,7 +54,6 @@ python3 main.py --use_weight_norm --truncate_sample
 The configurations, hyperparams and descriptions are in *src/hparams.py*
 
 ## TODO
- - Inference is not tested
  - Adding loss curve
  - Multiprocess Dataset Preparation
 
