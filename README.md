@@ -1,6 +1,6 @@
 # WAVEGLOW
 This is a tensorflow implementation of [NVIDIA/waveglow](https://github.com/NVIDIA/waveglow).
-Now some samples at step 375k are at */step_375k_samples*, please wait patiently for further results, the original paper is at 580k.
+Now some samples at step 592k are at */step_592k_samples*.
 
 ## Setup
 First we need python3 along with [Tensorflow](https://github.com/tensorflow/tensorflow) with gpu support, the version this repository use is **r1.12**.
