@@ -13,7 +13,7 @@ parser.add_argument('--lr', dest='lr', type=float, default=1e-4, help='Initial L
 parser.add_argument('--lr_decay_rate', dest='lr_decay_rate', type=float, default=0.5, help='Decay rate of exponential learning rate decay')
 parser.add_argument('--lr_decay_steps', dest='lr_decay_steps', type=int, default=300000, help='Decay steps of exponential learning rate decay')
 #Epoch Settings
-parser.add_argument('--epoch', dest='epoch', type=int, default=100000, help='Number of Epochs')
+parser.add_argument('--epoch', dest='epoch', type=int, default=500, help='Number of Epochs')
 parser.add_argument('--display_step', dest='display_step', type=int, default=100, help='Batch to Output Training Details')
 parser.add_argument('--saving_epoch', dest='saving_epoch', type=int, default=2, help='Epoch to Save Model')
 parser.add_argument('--sample_epoch', dest='sample_epoch', type=int, default=1, help='Epoch to Sample')
@@ -29,18 +29,18 @@ parser.add_argument('--use_weight_norm', dest='use_weight_norm', default=False, 
 
 ##Inference##
 parser.add_argument('--do_infer', dest='is_training', default=True, action='store_false', help='Default to training mode, do inference if --do_infer is specified')
-parser.add_argument('--infer_mel_dir', dest='infer_mel_dir', default='/data/lichen/waveglow/training_mels', help='Path to inference numpy files of mel spectrogram')
-parser.add_argument('--infer_path', dest='infer_path', default='/data/lichen/waveglow/inference', help='Path to output inference wavs')
+parser.add_argument('--infer_mel_dir', dest='infer_mel_dir', default='/waveglow/training_mels', help='Path to inference numpy files of mel spectrogram')
+parser.add_argument('--infer_path', dest='infer_path', default='/waveglow/inference', help='Path to output inference wavs')
 
 ##Sampling##
 parser.add_argument('--truncate_sample', dest='truncate_sample', default=False, action='store_true', help='Truncate the infer input mels to truncate_step due to GPU memory consideration or not')
 parser.add_argument('--truncate_step', dest='truncate_step', type=float, default=384, help='Truncate the infer input mels to truncate_step due to GPU memory consideration')
 
 ##Input Path##
-parser.add_argument('--metadata_dir', dest='metadata_dir', default='/data/lichen/TTS_data/LJSpeech-1.1/metadata.csv', help='Path to metadata.csv')
-parser.add_argument('--dataset_dir', dest='dataset_dir', default='/data/lichen/TTS_data/LJSpeech-1.1/wavs', help='Path to audio file for preprocessing dataset')
-parser.add_argument('--mel_dir', dest='mel_dir', default='/data/lichen/waveglow/training_mels', help='Path to input mel spectrogram (Output directory for processing dataset)')
-parser.add_argument('--wav_dir', dest='wav_dir', default='/data/lichen/waveglow/training_wavs', help='Path to input audio file for training (Output directory for processing dataset)')
+parser.add_argument('--metadata_dir', dest='metadata_dir', default='/LJSpeech-1.1/metadata.csv', help='Path to metadata.csv')
+parser.add_argument('--dataset_dir', dest='dataset_dir', default='/LJSpeech-1.1/wavs', help='Path to audio file for preprocessing dataset')
+parser.add_argument('--mel_dir', dest='mel_dir', default='/waveglow/training_mels', help='Path to input mel spectrogram (Output directory for processing dataset)')
+parser.add_argument('--wav_dir', dest='wav_dir', default='/waveglow/training_wavs', help='Path to input audio file for training (Output directory for processing dataset)')
 
 ##Output Path##
 parser.add_argument('--saving_path', dest='saving_path', default='../model', help='Path to save model if specified')
